@@ -68,11 +68,10 @@ function showSidebar() {
 function handleCommand(input, type){
   var intent = detectMessageIntent(input, type);
   
-  // if no intent parameters return whatever we get back client side
-  // for errror handling
-  if (!intent.queryResult && !!intent.queryResult.parameters){
-    return intent
-  }
+  // if you are using required parameter uncomment this test to continue the conversation
+  /* if (!("allRequiredParamsPresent" in intent.queryResult)){
+    return intent;
+  } */
   var param = intent.queryResult.parameters;
   // do stuff with detected parameters
   
