@@ -5,13 +5,13 @@
 // *** In the oneOffSetting function you need to include you service account file name 
 // *** stored on your Google Drive and your Dialogflow Agent project ID 
 
-var SIDEBAR_TITLE = 'Highlight Explorer';
+var SIDEBAR_TITLE = 'INSERT TITLE';
 
 /**
  * One off setup for Dialogflow service account
  */
 function oneOffSetting() { 
-  var file = DriveApp.getFilesByName('formatter-a40bd-ad22405d1752.json').next(); // <- your key file name
+  var file = DriveApp.getFilesByName('YOUR_SERVICE_ACCOUNT_KEY.json').next(); // <- your key file name
   // used by all using this script
   var propertyStore = PropertiesService.getScriptProperties();
   // service account for our Dialogflow agent
@@ -21,7 +21,7 @@ function oneOffSetting() {
       fileId: file.getId(),
       scopes : cGoa.GoaApp.scopesGoogleExpand (['cloud-platform']),
       service:'google_service',
-      project_id: 'formatter-a40bd' // <- your Dialogflow Agent Project ID
+      project_id: 'YOUR_DIALOGFLOW_PROJECT_ID' // <- your Dialogflow Agent Project ID
     }));
 }
 
@@ -34,7 +34,6 @@ function onOpen(e) {
   SpreadsheetApp.getUi() // <- change for Docs, Forms and Slides
       .createAddonMenu()
       .addItem('Start', 'showSidebar')
-      .addItem('Reset', 'reset')
       .addToUi();
 }
 
