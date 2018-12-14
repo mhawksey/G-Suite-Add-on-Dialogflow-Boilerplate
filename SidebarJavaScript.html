@@ -1,0 +1,81 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+  var REC_STATUS = 'stopped';
+  /**
+   * Run initializations on sidebar load.
+   */
+  $(function () {
+    // Assign handler functions to sidebar elements here, if needed.
+    $('#record').click(recordStatus);
+    $('#command').keypress(function (e) {
+      var key = e.which;
+      if (key == 13) {
+        $(this).prop('disabled', true);
+        sendCommand($(this).val(), 'text');
+        return false;
+      }
+    });
+    // One way to set your first message 
+    // $('#history').prepend($('<li class="collection-item reply"><i class="material-icons">format_quote</i>What would you like me to highlight?</li>'));
+  });
+  
+  // handle mic button 
+  function recordStatus() {
+    if (REC_STATUS === 'stopped') {
+      $('#record').addClass('recording');
+      startRecording();
+      REC_STATUS = 'recording';
+    } else if (REC_STATUS === 'recording') {
+      $('#record').removeClass('recording');
+      stopRecording();
+      REC_STATUS = 'stopped';
+    }
+  }
+  
+  // function to send text inputs
+  function sendCommand(input, type) {
+    // Send the value to the server and handle the response.
+    google.script.run
+      .withSuccessHandler(sucessHandler)
+      .withFailureHandler(failureHandler)
+      .handleCommand(input, type);
+  }
+  
+  // Handle responses from Dialogflow
+  function sucessHandler(intent) {
+    // Respond to success conditions here.
+    console.log(intent);
+    $('#command').prop('disabled', false).val('');
+    M.textareaAutoResize($('#command'));
+    // add what was asked by the user
+    $('#history').prepend($('<li class="collection-item quote"><i class="material-icons">format_quote</i>' + intent.queryResult.queryText + '</li>'));
+    if (intent.queryResult.fulfillmentText){
+      // if there is and fulfillmentText add it
+      $('#history').prepend($('<li class="collection-item reply"><i class="material-icons">format_quote</i>' + intent.queryResult.fulfillmentText + '</li>'));
+    }
+    $('#processingAudio').hide();
+  }
+
+  // Handle if something goes wrong
+  function failureHandler(intent) {
+    // Respond to failure conditions here.
+    $('#command').prop('disabled', false);
+    console.log(intent);
+    showStatus(intent, 'error');
+    $('#processingAudio').hide();
+  }
+
+  /**
+   * Displays the given status message in the sidebar.
+   *
+   * @param {String} msg The status message to display.
+   * @param {String} classId The message type (class id) that the message
+   *   should be displayed as.
+   */
+  function showStatus(msg, classId) {
+    $('#sidebar-status').removeClass().html(msg);
+    if (classId) {
+      $('#sidebar-status').addClass(classId);
+    }
+  }
+</script>
