@@ -63,10 +63,11 @@ function showSidebar() {
  * Handle text/audio requests from user.
  * @param {String|Audio} from user
  * @param {String} type of request
+ * @param {String} lang of request
  * @return {object} JSON-formatted intent response
  */
-function handleCommand(input, type){
-  var intent = detectMessageIntent(input, type);
+function handleCommand(input, type, lang){
+  var intent = detectMessageIntent(input, type, lang);
   
   // if you are using required parameter uncomment this test to continue the conversation
   /* if (!("allRequiredParamsPresent" in intent.queryResult)){
