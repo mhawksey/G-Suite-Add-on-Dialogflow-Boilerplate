@@ -11,12 +11,14 @@
       var key = e.which;
       if (key == 13) {
         $(this).prop('disabled', true);
+        $('#processing').show();
         sendCommand($(this).val(), 'text');
         return false;
       }
     });
     // One way to set your first message 
     // $('#history').prepend($('<li class="collection-item reply"><i class="material-icons">format_quote</i>What would you like me to highlight?</li>'));
+    $('#processing').hide();
   });
   
   // handle mic button 
@@ -34,6 +36,7 @@
   
   // function to send text inputs
   function sendCommand(input, type) {
+    $('#processing').show();
     // detect the browser language
     var lang = navigator.language;
     console.log('Detect language ' + lang);
@@ -48,17 +51,15 @@
   // Handle responses from Dialogflow
   function sucessHandler(intent) {
     // Respond to success conditions here.
-    console.log(intent);
+    console.log(intent)
     $('#command').prop('disabled', false).val('');
     M.textareaAutoResize($('#command'));
-    // add what was asked by the user
     $('#history').prepend($('<li class="collection-item quote"><i class="material-icons">format_quote</i>' + intent.queryResult.queryText + '</li>'));
     if (intent.queryResult.fulfillmentText){
-      // if there is and fulfillmentText add it
       $('#history').prepend($('<li class="collection-item reply"><i class="material-icons">format_quote</i>' + intent.queryResult.fulfillmentText + '</li>'));
     }
     $('#command').focus();
-    $('#processingAudio').hide();
+    $('#processing,#processingAudio').hide();
   }
 
   // Handle if something goes wrong
@@ -67,7 +68,7 @@
     $('#command').prop('disabled', false);
     console.log(intent);
     showStatus(intent, 'error');
-    $('#processingAudio').hide();
+    $('#processing,#processingAudio').hide();
   }
 
   /**

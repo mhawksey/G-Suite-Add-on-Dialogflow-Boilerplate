@@ -88,10 +88,10 @@ function handleCommand(input, type, lang){
  * Detect message intent from Dialogflow Agent.
  * @param {String|Audio} input from user 
  * @param {String} type of input
+ * @param {String} lang of request
  * @return {object} JSON-formatted response
  */
-function detectMessageIntent(input, type, optLang){
-  var lang = optLang || 'en';
+function detectMessageIntent(input, type, lang){
   // setting up calls to Dialogflow with Goa
   var goa = cGoa.GoaApp.createGoa ('dialogflow_serviceaccount',
                                    PropertiesService.getScriptProperties()).execute ();
@@ -148,5 +148,3 @@ function extractBase64_(dataURI) {
   }
   return baseString;
 }
-
-
