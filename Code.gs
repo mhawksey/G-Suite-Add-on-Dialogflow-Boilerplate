@@ -71,13 +71,17 @@ function handleCommand(input, type, lang){
   
   // if you are using required parameter uncomment this test to continue the conversation
   /* if (!("allRequiredParamsPresent" in intent.queryResult)){
-    return intent;
-  } */
-  var param = intent.queryResult.parameters;
-  // do stuff with detected parameters
-  
-  // return intent object client side 
   return intent;
+  } */
+  try {
+    var param = intent.queryResult.parameters;
+    // do stuff with detected parameters
+    
+    // return intent object client side 
+    return intent;
+  } catch(e) {
+    return intent;
+  }
 }
 
 /**
@@ -114,7 +118,6 @@ function detectMessageIntent(input, type, optLang){
   } else if(type === 'audio') {
     // prepare an audio query
     requestResource.queryInput.audioConfig= {"audioEncoding": 'AUDIO_ENCODING_LINEAR_16',
-                                             "sampleRateHertz": 48000,
                                              "languageCode": lang };
     requestResource.inputAudio = extractBase64_(input);
   } else {

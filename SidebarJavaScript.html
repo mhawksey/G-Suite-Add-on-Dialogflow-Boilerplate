@@ -34,9 +34,9 @@
   
   // function to send text inputs
   function sendCommand(input, type) {
-  
     // detect the browser language
-    var lang = navigator.language || 'en';
+    var lang = navigator.language;
+    console.log('Detect language ' + lang);
     
     // Send the value to the server and handle the response.
     google.script.run
